@@ -1,0 +1,6 @@
+<div class="board">
+  <p> # of Winners: <%= @winner_stats[:count] %></p>
+  <p> Average # of guesses for winners <%= @winner_stats[:avg_guesses] %></p>
+
+  <%= link_to('Play New Game', game_path(@board.id)) %>
+</div>

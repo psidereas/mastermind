@@ -1,0 +1,43 @@
+<div>
+  <div>
+    <p>
+      *Note: The last column denotes the number of pegs in the correct position and color and the number of pegs that are the correct
+      color but in the wrong position
+    </p>
+  </div>
+  <div class="board">
+    <h1>Mastermind Game # <%= @board.id %></h1>
+    <% if @board.game_over? %>
+      <% if @board.winner? %>
+        <p> You won! </p>
+        <p> With a guess of 
+          <% @board.last_guess.each do |color| %>
+            <div id="circle" class="<%= color %>"></div>
+          <% end %>
+        </p> 
+      <% else %>
+        <p> You lost! </p>
+      <% end %>
+      <%= link_to('Play Again?', game_index_path) %>
+    <% else %>
+      <% @board.board_layout.each_with_index do |row, index| %>
+        <div class="row"><%= index + 1 %></div>
+        <% row.first(4).each do |color| %>
+          <div id="circle" class="<%= color %>"></div>
+        <% end %>
+        <%= row.last(2) %>
+        <br>
+      <% end %>
+      <br>
+      <%= form_for :game, url: guess_game_path(@board.id), html: { multipart: true } do |f| %>
+        <%= f.select :guess_1, GameBoard::COLORS.invert.to_a %>
+        <%= f.select :guess_2, GameBoard::COLORS.invert.to_a %>
+        <%= f.select :guess_3, GameBoard::COLORS.invert.to_a %>
+        <%= f.select :guess_4, GameBoard::COLORS.invert.to_a %>
+
+        <%= f.submit "Make guess!"%>
+      <% end %>
+      
+    <% end %>
+  </div>
+</div>
